@@ -12,7 +12,7 @@ const Header = () => {
         <div className='header-item'>Criar Conta</div>
         <div className='header-item'>
           <BsCart3 size={25} />
-          <p style={{marginLeft: 5}}>5</p>
+          <p style={{ marginLeft: 5 }}>5</p>
         </div>
       </div>
     </div>
