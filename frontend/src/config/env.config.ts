@@ -1,3 +1,5 @@
-const API_URL = process.env.REACT_APP_API_URL;
+const env = {
+  apiUrl: process.env.REACT_APP_API_URL,
+};
 
-export {};
+export default env;
