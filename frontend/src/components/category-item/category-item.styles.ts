@@ -1,8 +1,8 @@
-import styled from 'styled-components'
-import Colors from '../../theme/theme.colors'
+import styled from "styled-components";
+import Colors from "../../theme/theme.colors";
 
 interface CategoryItemContainerProps {
-  backgroundImage: string
+  backgroundImage: string;
 }
 
 export const CategoryItemContainer = styled.div<CategoryItemContainerProps>`
@@ -25,7 +25,7 @@ export const CategoryItemContainer = styled.div<CategoryItemContainerProps>`
     padding: 0 50px 0 50px;
     height: 300px;
   }
-`
+`;
 
 export const CategoryName = styled.div`
   color: ${Colors.text.white};
@@ -48,4 +48,4 @@ export const CategoryName = styled.div`
   & p:nth-child(1) {
     font-weight: 600;
   }
-`
+`;
