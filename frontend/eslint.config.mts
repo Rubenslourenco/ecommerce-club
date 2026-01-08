@@ -1,8 +1,8 @@
-import js from "@eslint/js"
-import globals from "globals"
-import tseslint from "typescript-eslint"
-import pluginReact from "eslint-plugin-react"
-import prettier from "eslint-plugin-prettier"
+import js from "@eslint/js";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
+import prettier from "eslint-plugin-prettier";
 
 export default [
   {
@@ -12,20 +12,20 @@ export default [
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
-        ecmaFeatures: { jsx: true }
+        ecmaFeatures: { jsx: true },
       },
       globals: {
         ...globals.browser,
-        ...globals.node
-      }
+        ...globals.node,
+      },
     },
     settings: {
-      react: { version: "detect" }
+      react: { version: "detect" },
     },
     plugins: {
       "@typescript-eslint": tseslint.plugin,
       react: pluginReact,
-      prettier: prettier
+      prettier: prettier,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -40,16 +40,24 @@ export default [
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
-        { varsIgnorePattern: "^React$" }
+        { varsIgnorePattern: "^React$" },
       ],
 
-      // Prettier
-      "prettier/prettier": ["error", { singleQuote: false }]
-    }
+      "prettier/prettier": [
+        "error",
+        {
+          semi: true,
+          singleQuote: false,
+          jsxSingleQuote: false,
+          useTabs: false,
+          trailingComma: "es5",
+        },
+      ],
+    },
   },
 
   // Segundo bloco - ignore
   {
-    ignores: ["dist/**", "node_modules/**"]
-  }
-]
+    ignores: ["dist/**", "node_modules/**"],
+  },
+];
