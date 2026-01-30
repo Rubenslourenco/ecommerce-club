@@ -1,4 +1,5 @@
 // import { BsGoogle } from "react-icons/bs";
+import { useForm } from "react-hook-form";
 
 import CustomButton from "../../components/custom-buttom/custom-button.component";
 import CustomInput from "../../components/custum-input/custom-input.component";
@@ -12,6 +13,18 @@ import {
 } from "./login.styles";
 
 const LoginPage = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+
+  const handleSubmitPress = (data: any) => {
+    console.log("data", data);
+  };
+
+  console.log("errors", errors);
+
   return (
     <>
       <Header />
@@ -33,14 +46,25 @@ const LoginPage = () => {
           <LoginSubtitle>ou entre com seu email</LoginSubtitle>
 
           <LoginInputContainer>
-            <CustomInput placeholder="Digite seu email" />
+            <CustomInput
+              hasError={!!errors?.email}
+              placeholder="Digite seu email"
+              {...register("email", { required: true })}
+            />
           </LoginInputContainer>
 
           <LoginInputContainer>
-            <CustomInput placeholder="Digite sua senha" type="password" />
+            <CustomInput
+              hasError={!!errors?.password}
+              placeholder="Digite sua senha"
+              type="password"
+              {...register("password", { required: true })}
+            />
           </LoginInputContainer>
 
-          <CustomButton>Entrar</CustomButton>
+          <CustomButton onClick={() => handleSubmit(handleSubmitPress)()}>
+            Entrar
+          </CustomButton>
         </LoginContent>
       </LoginContainer>
     </>
