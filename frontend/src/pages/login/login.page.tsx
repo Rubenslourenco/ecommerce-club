@@ -1,8 +1,10 @@
 // import { BsGoogle } from "react-icons/bs";
 import { useForm } from "react-hook-form";
+import validator from "validator";
 
 import CustomButton from "../../components/custom-buttom/custom-button.component";
 import CustomInput from "../../components/custum-input/custom-input.component";
+import InputErrorMessage from "../../components/input-error-message/input-error-message";
 import Header from "../../components/header/header.component";
 import {
   LoginContainer,
@@ -49,8 +51,22 @@ const LoginPage = () => {
             <CustomInput
               hasError={!!errors?.email}
               placeholder="Digite seu email"
-              {...register("email", { required: true })}
+              {...register("email", {
+                required: true,
+                validate: (value) => {
+                  return validator.isEmail(value);
+                },
+              })}
             />
+            {errors?.email?.type === "required" && (
+              <InputErrorMessage>Email é obrigatório</InputErrorMessage>
+            )}
+
+            {errors?.email?.type === "validate" && (
+              <InputErrorMessage>
+                Por favor, insira um email válido
+              </InputErrorMessage>
+            )}
           </LoginInputContainer>
 
           <LoginInputContainer>
@@ -60,6 +76,9 @@ const LoginPage = () => {
               type="password"
               {...register("password", { required: true })}
             />
+            {errors?.password?.type === "required" && (
+              <InputErrorMessage>Sua senha é obrigatória</InputErrorMessage>
+            )}
           </LoginInputContainer>
 
           <CustomButton onClick={() => handleSubmit(handleSubmitPress)()}>
