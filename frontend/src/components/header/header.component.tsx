@@ -16,13 +16,17 @@ const Header = () => {
     navigate("/login");
   };
 
+  const handleSingUpClick = () => {
+    navigate("/sign-up");
+  };
+
   return (
     <HeaderContainer>
       <HeaderTitle className="header-title">CLUB CLOTHING</HeaderTitle>
       <HeaderItems>
         <HeaderItem>Explorar</HeaderItem>
         <HeaderItem onClick={handleLoginClick}>Login</HeaderItem>
-        <HeaderItem>Criar Conta</HeaderItem>
+        <HeaderItem onClick={handleSingUpClick}>Criar Conta</HeaderItem>
         <HeaderItem>
           {(() => {
             const Icon = BsCart3 as unknown as React.FC<{ size?: number }>;
