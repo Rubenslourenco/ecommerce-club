@@ -13,6 +13,9 @@ import {
   SignUpInputContainer,
 } from "./sing-up.styles";
 import InputErrorMessage from "../../components/input-error-message/input-error-message";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../config/firebase.config";
+import { addDoc, collection } from "firebase/firestore";
 
 interface SingUpForms {
   name: string;
@@ -32,8 +35,23 @@ const SingUpPage = () => {
 
   const watchPassword = watch("password");
 
-  const handleSubmitPress = (data: SingUpForms) => {
-    console.log({ data });
+  const handleSubmitPress = async (data: SingUpForms) => {
+    try {
+      const usercredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+
+      await addDoc(collection(db, "users"), {
+        id: usercredential.user.uid,
+        name: data.name,
+        lastName: data.lastName,
+        email: data.email,
+      });
+    } catch (error) {
+      console.log("error creating user", error);
+    }
   };
   return (
     <>
