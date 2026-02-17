@@ -1,5 +1,5 @@
 // import { BsGoogle } from "react-icons/bs";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import validator from "validator";
 
 import CustomButton from "../../components/custom-buttom/custom-button.component";
@@ -13,6 +13,13 @@ import {
   LoginInputContainer,
   LoginSubtitle,
 } from "./login.styles";
+import {
+  Auth,
+  AuthError,
+  AuthErrorCodes,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../../config/firebase.config";
 
 interface LoginForms {
   email: string;
@@ -24,10 +31,28 @@ const LoginPage = () => {
     register,
     formState: { errors },
     handleSubmit,
+    setError,
   } = useForm<LoginForms>();
 
-  const handleSubmitPress = (data: any) => {
-    console.log("data", data);
+  const handleSubmitPress = async (data: LoginForms) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      console.log("User signed in:", userCredential.user);
+    } catch (error) {
+      const _error = error as AuthError;
+
+      if (_error.code === AuthErrorCodes.INVALID_LOGIN_CREDENTIALS) {
+        return setError("password", { type: "mismatch" });
+      }
+
+      if (_error.code === AuthErrorCodes.INVALID_LOGIN_CREDENTIALS) {
+        return setError("email", { type: "notFound" });
+      }
+    }
   };
 
   console.log("errors", errors);
@@ -72,6 +97,10 @@ const LoginPage = () => {
                 Por favor, insira um email válido
               </InputErrorMessage>
             )}
+
+            {errors?.email?.type === "notfound" && (
+              <InputErrorMessage>Email não foi encontrado</InputErrorMessage>
+            )}
           </LoginInputContainer>
 
           <LoginInputContainer>
@@ -83,6 +112,9 @@ const LoginPage = () => {
             />
             {errors?.password?.type === "required" && (
               <InputErrorMessage>Sua senha é obrigatória</InputErrorMessage>
+            )}
+            {errors?.password?.type === "mismatch" && (
+              <InputErrorMessage>Senha digita não existe</InputErrorMessage>
             )}
           </LoginInputContainer>
 
