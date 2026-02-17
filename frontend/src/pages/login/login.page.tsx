@@ -17,9 +17,12 @@ import {
   Auth,
   AuthError,
   AuthErrorCodes,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../../config/firebase.config";
+import { auth, db, googleProvider } from "../../config/firebase.config";
+import { addDoc, collection, getDocs, query, where } from "@firebase/firestore";
 
 interface LoginForms {
   email: string;
@@ -55,6 +58,38 @@ const LoginPage = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider);
+
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "users"),
+          where("uid", "==", userCredential.user.uid)
+        )
+      );
+
+      const user = querySnapshot.docs[0]?.data();
+
+      if (!user) {
+        const firstName = userCredential.user.displayName?.split(" ")[0];
+        const lastName = userCredential.user.displayName?.split(" ")[1];
+
+        await addDoc(collection(db, "users"), {
+          uid: userCredential.user.uid,
+          email: userCredential.user.email,
+          firstName,
+          lastName,
+          provider: "google",
+        });
+      }
+
+      console.log("Google user data:", user);
+    } catch (error) {
+      console.error("Error during Google sign-in:", error);
+    }
+  };
+
   console.log("errors", errors);
 
   return (
@@ -65,13 +100,7 @@ const LoginPage = () => {
         <LoginContent>
           <LoginHeadline>Entre com a sua conta</LoginHeadline>
 
-          <CustomButton
-          // startIcon={
-          //   <span>
-          //     <BsGoogle size={25} />
-          //   </span>
-          // }
-          >
+          <CustomButton onClick={handleGoogleSignIn}>
             Entrar com Google
           </CustomButton>
 

@@ -48,6 +48,7 @@ const SingUpPage = () => {
         name: data.name,
         lastName: data.lastName,
         email: data.email,
+        provider: "firebase",
       });
     } catch (error) {
       console.log("error creating user", error);
