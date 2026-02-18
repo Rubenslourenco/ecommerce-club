@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext } from "react";
+import { FunctionComponent, useContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/home/home.page";
@@ -9,14 +9,17 @@ import { UserContext } from "./contexts/user.context";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./config/firebase.config";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { set } from "react-hook-form";
 
 const App: FunctionComponent = () => {
+  const [isInitializing, setIsInitializing] = useState(true);
   const { isAuthenticated, loginUser, logoutUser } = useContext(UserContext);
 
   onAuthStateChanged(auth, async (user) => {
     const isSinningOut = isAuthenticated && !user;
     if (isSinningOut) {
-      return logoutUser();
+      logoutUser();
+      return setIsInitializing(false);
     }
 
     const inSigninIn = !isAuthenticated && user;
@@ -27,9 +30,14 @@ const App: FunctionComponent = () => {
 
       const userFromFirebasse = querySnapshot.docs[0]?.data();
 
-      return loginUser(userFromFirebasse as any);
+      loginUser(userFromFirebasse as any);
+      return setIsInitializing(false);
     }
+    return setIsInitializing(false);
   });
+
+  if (isInitializing) return null;
+
   return (
     <BrowserRouter>
       <Routes>
