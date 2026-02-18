@@ -1,4 +1,3 @@
-import { use } from "react";
 import { useForm } from "react-hook-form";
 import validator from "validator";
 
@@ -37,14 +36,14 @@ const SingUpPage = () => {
 
   const handleSubmitPress = async (data: SingUpForms) => {
     try {
-      const usercredential = await createUserWithEmailAndPassword(
+      const userCredentials = await createUserWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
 
       await addDoc(collection(db, "users"), {
-        id: usercredential.user.uid,
+        id: userCredentials.user.uid,
         name: data.name,
         lastName: data.lastName,
         email: data.email,

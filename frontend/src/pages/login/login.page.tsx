@@ -14,10 +14,8 @@ import {
   LoginSubtitle,
 } from "./login.styles";
 import {
-  Auth,
   AuthError,
   AuthErrorCodes,
-  GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
@@ -39,12 +37,12 @@ const LoginPage = () => {
 
   const handleSubmitPress = async (data: LoginForms) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      const userCredentials = await signInWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-      console.log("User signed in:", userCredential.user);
+      console.log("User signed in:", userCredentials.user);
     } catch (error) {
       const _error = error as AuthError;
 
@@ -58,35 +56,34 @@ const LoginPage = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleSignInWithGooglePress = async () => {
     try {
-      const userCredential = await signInWithPopup(auth, googleProvider);
+      const userCredentials = await signInWithPopup(auth, googleProvider);
 
       const querySnapshot = await getDocs(
         query(
           collection(db, "users"),
-          where("uid", "==", userCredential.user.uid)
+          where("id", "==", userCredentials.user.uid)
         )
       );
 
       const user = querySnapshot.docs[0]?.data();
 
       if (!user) {
-        const firstName = userCredential.user.displayName?.split(" ")[0];
-        const lastName = userCredential.user.displayName?.split(" ")[1];
+        const firstName = userCredentials.user.displayName?.split(" ")[0];
+        const lastName = userCredentials.user.displayName?.split(" ")[1];
 
         await addDoc(collection(db, "users"), {
-          uid: userCredential.user.uid,
-          email: userCredential.user.email,
+          id: userCredentials.user.uid,
+          email: userCredentials.user.email,
           firstName,
           lastName,
           provider: "google",
         });
       }
-
-      console.log("Google user data:", user);
+      console.log("User signed in with Google:", user);
     } catch (error) {
-      console.error("Error during Google sign-in:", error);
+      console.log(error);
     }
   };
 
@@ -100,7 +97,7 @@ const LoginPage = () => {
         <LoginContent>
           <LoginHeadline>Entre com a sua conta</LoginHeadline>
 
-          <CustomButton onClick={handleGoogleSignIn}>
+          <CustomButton onClick={handleSignInWithGooglePress}>
             Entrar com Google
           </CustomButton>
 
