@@ -30,13 +30,13 @@ const Header = () => {
       <HeaderTitle className="header-title">CLUB CLOTHING</HeaderTitle>
       <HeaderItems>
         <HeaderItem>Explorar</HeaderItem>
-        {!isAuthenticated && (
+        {isAuthenticated && (
           <>
             <HeaderItem onClick={handleLoginClick}>Login</HeaderItem>
             <HeaderItem onClick={handleSingUpClick}>Criar Conta</HeaderItem>
           </>
         )}
-        {isAuthenticated && (
+        {!isAuthenticated && (
           <HeaderItem onClick={() => signOut(auth)}>Sair</HeaderItem>
         )}
         <HeaderItem>

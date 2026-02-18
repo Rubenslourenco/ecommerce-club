@@ -15,6 +15,9 @@ import InputErrorMessage from "../../components/input-error-message/input-error-
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../config/firebase.config";
 import { addDoc, collection } from "firebase/firestore";
+import { UserContext } from "../../contexts/user.context";
+import { use, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface SingUpForms {
   name: string;
@@ -31,6 +34,16 @@ const SingUpPage = () => {
     watch,
     formState: { errors },
   } = useForm<SingUpForms>();
+
+  const isAuthetication = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthetication) {
+      navigate("/");
+    }
+  }, [isAuthetication]);
 
   const watchPassword = watch("password");
 
