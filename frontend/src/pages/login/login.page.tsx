@@ -1,5 +1,5 @@
 // import { BsGoogle } from "react-icons/bs";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import validator from "validator";
 
 import CustomButton from "../../components/custom-buttom/custom-button.component";
@@ -22,8 +22,9 @@ import {
 import { auth, db, googleProvider } from "../../config/firebase.config";
 import { addDoc, collection, getDocs, query, where } from "@firebase/firestore";
 import { UserContext } from "../../contexts/user.context";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/loading/loading.component";
 
 interface LoginForms {
   email: string;
@@ -38,6 +39,8 @@ const LoginPage = () => {
     setError,
   } = useForm<LoginForms>();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { isAuthenticated } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -50,6 +53,7 @@ const LoginPage = () => {
 
   const handleSubmitPress = async (data: LoginForms) => {
     try {
+      setIsLoading(true);
       const userCredentials = await signInWithEmailAndPassword(
         auth,
         data.email,
@@ -66,11 +70,14 @@ const LoginPage = () => {
       if (_error.code === AuthErrorCodes.INVALID_LOGIN_CREDENTIALS) {
         return setError("email", { type: "notFound" });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignInWithGooglePress = async () => {
     try {
+      setIsLoading(true);
       const userCredentials = await signInWithPopup(auth, googleProvider);
 
       const querySnapshot = await getDocs(
@@ -97,6 +104,8 @@ const LoginPage = () => {
       console.log("User signed in with Google:", user);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -105,7 +114,7 @@ const LoginPage = () => {
   return (
     <>
       <Header />
-
+      {isLoading && <Loading />}
       <LoginContainer>
         <LoginContent>
           <LoginHeadline>Entre com a sua conta</LoginHeadline>
