@@ -20,7 +20,7 @@ export const UserContext = createContext<IUserContext>({
   logoutUser: () => {},
 });
 
-const UserContexrProvider: FunctionComponent<PropsWithChildren> = ({
+const UserContextProvider: FunctionComponent<PropsWithChildren> = ({
   children,
 }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -44,4 +44,4 @@ const UserContexrProvider: FunctionComponent<PropsWithChildren> = ({
   );
 };
 
-export default UserContexrProvider;
+export default UserContextProvider;
