@@ -35,15 +35,15 @@ const SingUpPage = () => {
     formState: { errors },
   } = useForm<SingUpForms>();
 
-  const isAuthetication = useContext(UserContext);
+  const { isAuthenticated } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthetication) {
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, [isAuthetication]);
+  }, [isAuthenticated]);
 
   const watchPassword = watch("password");
 

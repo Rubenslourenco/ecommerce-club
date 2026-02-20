@@ -25,19 +25,23 @@ const Header = () => {
     navigate("/sign-up");
   };
 
+  const handleSignOutClick = () => {
+    signOut(auth);
+  };
+
   return (
     <HeaderContainer>
       <HeaderTitle className="header-title">CLUB CLOTHING</HeaderTitle>
       <HeaderItems>
         <HeaderItem>Explorar</HeaderItem>
-        {isAuthenticated && (
+        {!isAuthenticated && (
           <>
             <HeaderItem onClick={handleLoginClick}>Login</HeaderItem>
             <HeaderItem onClick={handleSingUpClick}>Criar Conta</HeaderItem>
           </>
         )}
-        {!isAuthenticated && (
-          <HeaderItem onClick={() => signOut(auth)}>Sair</HeaderItem>
+        {isAuthenticated && (
+          <HeaderItem onClick={handleSignOutClick}>Sair</HeaderItem>
         )}
         <HeaderItem>
           {(() => {

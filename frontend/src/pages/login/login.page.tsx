@@ -38,7 +38,7 @@ const LoginPage = () => {
     setError,
   } = useForm<LoginForms>();
 
-  const isAuthenticated = useContext(UserContext);
+  const { isAuthenticated } = useContext(UserContext);
 
   const navigate = useNavigate();
 
