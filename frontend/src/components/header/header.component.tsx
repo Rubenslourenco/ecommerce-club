@@ -17,6 +17,10 @@ const Header = () => {
 
   const { isAuthenticated } = useContext(UserContext);
 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   const handleLoginClick = () => {
     navigate("/login");
   };
@@ -31,7 +35,9 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <HeaderTitle className="header-title">CLUB CLOTHING</HeaderTitle>
+      <HeaderTitle onClick={handleLogoClick} className="header-title">
+        CLUB CLOTHING
+      </HeaderTitle>
       <HeaderItems>
         <HeaderItem>Explorar</HeaderItem>
         {!isAuthenticated && (
