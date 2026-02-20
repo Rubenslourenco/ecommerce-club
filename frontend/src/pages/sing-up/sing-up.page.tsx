@@ -16,8 +16,9 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../config/firebase.config";
 import { addDoc, collection } from "firebase/firestore";
 import { UserContext } from "../../contexts/user.context";
-import { use, useContext, useEffect } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/loading/loading.component";
 
 interface SingUpForms {
   name: string;
@@ -36,6 +37,7 @@ const SingUpPage = () => {
   } = useForm<SingUpForms>();
 
   const { isAuthenticated } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -49,6 +51,7 @@ const SingUpPage = () => {
 
   const handleSubmitPress = async (data: SingUpForms) => {
     try {
+      setIsLoading(true);
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         data.email,
@@ -64,12 +67,14 @@ const SingUpPage = () => {
       });
     } catch (error) {
       console.log("error creating user", error);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <>
       <Header />
-
+      {isLoading && <Loading />}
       <SignUpContainer>
         <SignUpContent>
           <SignUpHeadline>Crie sua conta</SignUpHeadline>
