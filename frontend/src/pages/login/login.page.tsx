@@ -1,5 +1,5 @@
 // import { BsGoogle } from "react-icons/bs";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import validator from "validator";
 
 import CustomButton from "../../components/custom-buttom/custom-button.component";
