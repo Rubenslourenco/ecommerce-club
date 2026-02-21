@@ -33,13 +33,17 @@ const Header = () => {
     signOut(auth);
   };
 
+  const handleExploreClick = () => {
+    navigate("/explore");
+  };
+
   return (
     <HeaderContainer>
       <HeaderTitle onClick={handleLogoClick} className="header-title">
         CLUB CLOTHING
       </HeaderTitle>
       <HeaderItems>
-        <HeaderItem>Explorar</HeaderItem>
+        <HeaderItem onClick={handleExploreClick}>Explorar</HeaderItem>
         {!isAuthenticated && (
           <>
             <HeaderItem onClick={handleLoginClick}>Login</HeaderItem>
