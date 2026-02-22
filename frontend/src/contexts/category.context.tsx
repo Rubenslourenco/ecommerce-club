@@ -2,7 +2,6 @@ import {
   createContext,
   FunctionComponent,
   PropsWithChildren,
-  useEffect,
   useState,
 } from "react";
 import Category from "../types/category.types";
