@@ -8,7 +8,6 @@ import Category from "../types/category.types";
 import { collection, getDocs } from "firebase/firestore";
 import { categoryConverter } from "../converters/firestore.converters";
 import { db } from "../config/firebase.config";
-import { set } from "react-hook-form";
 
 interface ICategoryContext {
   categories: Category[];
