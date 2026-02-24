@@ -11,11 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase.config";
 import { UserContext } from "../../contexts/user.context";
-
+import { CartContext } from "../../contexts/cart.context";
 const Header = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated } = useContext(UserContext);
+  const { toggleCart } = useContext(CartContext);
 
   const handleLogoClick = () => {
     navigate("/");
@@ -53,7 +54,7 @@ const Header = () => {
         {isAuthenticated && (
           <HeaderItem onClick={handleSignOutClick}>Sair</HeaderItem>
         )}
-        <HeaderItem>
+        <HeaderItem onClick={toggleCart}>
           {(() => {
             const Icon = BsCart3 as unknown as React.FC<{ size?: number }>;
             return <Icon size={25} />;
