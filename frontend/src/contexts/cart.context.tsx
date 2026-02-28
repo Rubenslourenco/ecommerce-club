@@ -12,6 +12,7 @@ import Product from "../types/product.types";
 interface ICartContext {
   isVisible: boolean;
   productsTotalPrice: number;
+  productsCount: number;
   products: CartProduct[];
   toggleCart: () => void;
   addProductToCar: (product: Product) => void;
@@ -23,6 +24,7 @@ interface ICartContext {
 export const CartContext = createContext<ICartContext>({
   isVisible: false,
   productsTotalPrice: 0,
+  productsCount: 0,
   products: [],
   toggleCart: () => {},
   addProductToCar: () => {},
@@ -40,6 +42,12 @@ const CartContextProvider: FunctionComponent<PropsWithChildren> = ({
   const productsTotalPrice = useMemo(() => {
     return products.reduce((acc, currentProduct) => {
       return acc + currentProduct.price * currentProduct.quantity;
+    }, 0);
+  }, [products]);
+
+  const productsCount = useMemo(() => {
+    return products.reduce((acc, currentProduct) => {
+      return acc + currentProduct.quantity;
     }, 0);
   }, [products]);
 
@@ -96,6 +104,7 @@ const CartContextProvider: FunctionComponent<PropsWithChildren> = ({
         isVisible,
         productsTotalPrice,
         products,
+        productsCount,
         toggleCart,
         addProductToCar,
         removeProductFromCart,
