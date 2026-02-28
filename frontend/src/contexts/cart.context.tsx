@@ -4,6 +4,7 @@ import {
   FunctionComponent,
   PropsWithChildren,
   use,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -37,7 +38,14 @@ const CartContextProvider: FunctionComponent<PropsWithChildren> = ({
   children,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [products, setProduct] = useState<CartProduct[]>([]);
+  const [products, setProduct] = useState<CartProduct[]>(() => {
+    const storedProducts = localStorage.getItem("cartProducts");
+    return storedProducts ? JSON.parse(storedProducts) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("cartProducts", JSON.stringify(products));
+  }, [products]);
 
   const productsTotalPrice = useMemo(() => {
     return products.reduce((acc, currentProduct) => {
