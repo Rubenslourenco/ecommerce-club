@@ -6,17 +6,18 @@ import {
   useState,
 } from "react";
 import Product from "../types/product.types";
+import { set } from "react-hook-form";
 
 interface ICartContext {
   isVisible: boolean;
-  product: CartProduct[];
+  products: CartProduct[];
   toggleCart: () => void;
   addProductToCar: (product: Product) => void;
 }
 
 export const CartContext = createContext<ICartContext>({
   isVisible: false,
-  product: [],
+  products: [],
   toggleCart: () => {},
   addProductToCar: () => {},
 });
@@ -25,18 +26,32 @@ const CartContextProvider: FunctionComponent<PropsWithChildren> = ({
   children,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [product, setProduct] = useState<CartProduct[]>([]);
+  const [products, setProduct] = useState<CartProduct[]>([]);
 
   const toggleCart = () => {
     setIsVisible((prevState) => !prevState);
   };
 
   const addProductToCar = (product: Product) => {
+    const productIsAlreadyCart = products.some(
+      (item) => item.id === product.id
+    );
+
+    if (productIsAlreadyCart) {
+      return setProduct((products) =>
+        products.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      );
+    }
+
     setProduct((prevState) => [...prevState, { ...product, quantity: 1 }]);
   };
   return (
     <CartContext.Provider
-      value={{ isVisible, product, toggleCart, addProductToCar }}
+      value={{ isVisible, products, toggleCart, addProductToCar }}
     >
       {children}
     </CartContext.Provider>
