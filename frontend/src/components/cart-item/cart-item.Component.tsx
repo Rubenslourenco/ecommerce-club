@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import {
   CartItemContainer,
   CartItemImage,
@@ -7,12 +7,18 @@ import {
   RemoveButton,
 } from "./cart-item.styles";
 import CartProduct from "../../types/cart.types";
+import { CartContext } from "../../contexts/cart.context";
 
 interface CartItemProps {
   product: CartProduct;
 }
 
 const CartItem: FunctionComponent<CartItemProps> = ({ product }) => {
+  const { removeProductFromCart } = useContext(CartContext);
+
+  const handleRemoveProduct = () => {
+    removeProductFromCart(product.id);
+  };
   return (
     <CartItemContainer>
       <CartItemImage imageUrl={product.imageUrl}></CartItemImage>
@@ -26,7 +32,7 @@ const CartItem: FunctionComponent<CartItemProps> = ({ product }) => {
         <CartItemQuantity></CartItemQuantity>
       </CartItemInfo>
 
-      <RemoveButton>Remover</RemoveButton>
+      <RemoveButton onClick={handleRemoveProduct}>Remover</RemoveButton>
     </CartItemContainer>
   );
 };
