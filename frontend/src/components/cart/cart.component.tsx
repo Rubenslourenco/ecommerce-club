@@ -11,10 +11,16 @@ import {
 import { CartContext } from "../../contexts/cart.context";
 import CustomButton from "../custom-buttom/custom-button.component";
 import CartItem from "../cart-item/cart-item.Component";
+import { useNavigate } from "react-router-dom";
 
 const Cart: FunctionComponent = () => {
   const { isVisible, toggleCart, products, productsTotalPrice, productsCount } =
     useContext(CartContext);
+  const navigate = useNavigate();
+
+  const handleCheckoutClick = () => {
+    navigate("/checkout");
+  };
   return (
     <>
       <CartContainer isVisible={isVisible}>
@@ -27,7 +33,9 @@ const Cart: FunctionComponent = () => {
           {productsCount > 0 && (
             <>
               <CartTotal>Total: R${productsTotalPrice}</CartTotal>
-              <CustomButton>Ir para o checkout</CustomButton>
+              <CustomButton onClick={handleCheckoutClick}>
+                Ir para o checkout
+              </CustomButton>
             </>
           )}
 
